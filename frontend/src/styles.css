@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------- base: page-level defaults ---------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    max-width: 100%;
+  }
+  @media (min-width: 1600px) {
+    html { font-size: 17px; }
+  }
+  body {
+    @apply max-w-full overflow-x-hidden bg-pearl font-sans text-base font-normal leading-[1.7] text-ink;
+  }
+  svg { max-width: 100%; }
+
+  h1, h2, h3, h4, h5, h6 { margin-top: 0; margin-bottom: .5rem; }
+  h1, h2, h3, h4 {
+    @apply font-serif font-semibold leading-[1.1] tracking-[-.01em];
+  }
+  h2 { font-size: clamp(1.8rem, 4.5vw, 3.2rem); }
+  h3 { font-size: calc(1.3rem + .6vw); }
+  h4 { font-size: calc(1.275rem + .3vw); }
+  @media (min-width: 1200px) {
+    h3 { font-size: 1.75rem; }
+    h4 { font-size: 1.5rem; }
+  }
+  h5 { font-size: 1.25rem; font-weight: 500; line-height: 1.2; }
+  p { margin-top: 0; margin-bottom: 1rem; }
+  blockquote, figure { margin: 0 0 1rem; }
+  small { font-size: .875em; }
+  label { display: inline-block; }
+  h1, h2, h3, h4, h5, h6, p, li, a, span, blockquote { overflow-wrap: break-word; }
+
+  :focus-visible { outline: 2px solid theme('colors.gold'); outline-offset: 3px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-duration: .01ms !important;
+      animation-delay: 0s !important;
+      transition: none !important;
+    }
+  }
+}
+
+/* ---------- components: only the pieces that repeat a lot ---------- */
+@layer components {
+  .btn-gold {
+    @apply inline-block cursor-pointer select-none rounded-[50px] border-0 bg-gold-shine bg-[length:200%_100%] px-8 py-[.85rem] text-center align-middle font-semibold leading-normal text-ink no-underline;
+    @apply transition-[background-position,transform,box-shadow] duration-[.5s,.25s,.25s];
+    @apply hover:-translate-y-0.5 hover:bg-[position:100%_0] hover:text-ink hover:shadow-gold;
+    @apply disabled:pointer-events-none disabled:opacity-[.65];
+  }
+  .btn-line {
+    @apply inline-block cursor-pointer select-none rounded-[50px] border border-[rgba(250,251,255,.5)] bg-transparent px-8 py-[.85rem] text-center align-middle leading-normal text-pearl no-underline transition-all duration-[.25s];
+    @apply hover:bg-pearl hover:text-ink;
+  }
+
+  /* form fields (inputs, selects, textareas) */
+  .field {
+    @apply block w-full appearance-none rounded-[14px] border border-edge bg-pearl bg-clip-padding px-4 py-[.8rem] text-[16px] font-normal leading-normal text-ink transition-[border-color,box-shadow] duration-150 ease-in-out;
+    @apply placeholder:text-[rgba(33,37,41,.75)] focus:border-royal focus:shadow-[0_0_0_.25rem_rgba(37,99,235,.2)] focus:outline-none;
+  }
+  select.field {
+    background-image: theme('backgroundImage.select-arrow');
+    background-repeat: no-repeat;
+    background-position: right .75rem center;
+    background-size: 16px 12px;
+  }
+  .invalid-feedback {
+    @apply mt-1 hidden w-full text-[.875em] text-danger;
+  }
+
+  /* validation look (turns on after the first submit, like before) */
+  .was-validated .field:invalid {
+    @apply border-danger pr-[calc(1.5em+.75rem)] focus:border-danger focus:shadow-[0_0_0_.25rem_rgba(220,53,69,.25)];
+    background-image: theme('backgroundImage.field-bad');
+    background-repeat: no-repeat;
+    background-position: right calc(.375em + .1875rem) center;
+    background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+  }
+  .was-validated .field:valid {
+    @apply border-[#198754] pr-[calc(1.5em+.75rem)] focus:border-[#198754] focus:shadow-[0_0_0_.25rem_rgba(25,135,84,.25)];
+    background-image: theme('backgroundImage.field-ok');
+    background-repeat: no-repeat;
+    background-position: right calc(.375em + .1875rem) center;
+    background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+  }
+  .was-validated select.field:invalid {
+    @apply pr-[4.125rem];
+    background-image: theme('backgroundImage.select-arrow'), theme('backgroundImage.field-bad');
+    background-position: right .75rem center, center right 2.25rem;
+    background-size: 16px 12px, calc(.75em + .375rem) calc(.75em + .375rem);
+  }
+  .was-validated select.field:valid {
+    @apply pr-[4.125rem];
+    background-image: theme('backgroundImage.select-arrow'), theme('backgroundImage.field-ok');
+    background-position: right .75rem center, center right 2.25rem;
+    background-size: 16px 12px, calc(.75em + .375rem) calc(.75em + .375rem);
+  }
+  .was-validated textarea.field:invalid,
+  .was-validated textarea.field:valid {
+    background-position: top calc(.375em + .1875rem) right calc(.375em + .1875rem);
+  }
+  .was-validated .field:invalid ~ .invalid-feedback { @apply block; }
+}

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist/frontend/browser",
+  "rewrites": [
+    { "source": "/notify/:path*", "destination": "/api/notify/:path*" },
+    { "source": "/analytics/:path*", "destination": "/api/analytics/:path*" },
+    { "source": "/((?!api/|notify/|analytics/).*)", "destination": "/index.html" }
+  ]
+}

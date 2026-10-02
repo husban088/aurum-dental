@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.angular/
+target/
+__pycache__/
+.venv/
+.idea/
+*.iml
+
+# Local env files / Vercel
+.env
+.env.*
+!.env.example
+.vercel

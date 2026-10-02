@@ -1,0 +1,169 @@
+@if (!isDash()) {
+  <nav
+    id="nav"
+    class="fixed inset-x-0 top-0 z-[1030] py-[.7rem] transition-[background,box-shadow] duration-300 lg:py-4"
+    [ngClass]="
+      scrolled()
+        ? 'bg-[rgba(10,31,68,.94)] shadow-[0_4px_30px_rgba(0,0,0,.25)] backdrop-blur-[10px]'
+        : ''
+    "
+  >
+    <div
+      class="container flex flex-wrap items-center justify-between lg:flex-nowrap"
+    >
+      <a
+        class="mr-2 inline-block min-w-0 max-w-[calc(100%-64px)] overflow-hidden text-ellipsis whitespace-nowrap py-[.3125rem] font-serif text-[clamp(1.1rem,5.4vw,1.7rem)] text-pearl no-underline lg:text-[1.5rem] xl:text-[1.7rem]"
+        routerLink="/"
+        ><i class="bi bi-gem text-gold2"></i> Aurum
+        <span class="text-gold2 max-[359.98px]:hidden">Dental Atelier</span></a
+      >
+      <button
+        class="flex-none rounded-md border border-[rgba(250,251,255,.4)] bg-transparent px-[.6rem] py-[.35rem] text-[1.25rem] leading-none focus:shadow-[0_0_0_.2rem_rgba(235,208,142,.35)] focus:outline-none lg:hidden"
+        type="button"
+        (click)="navOpen.set(!navOpen())"
+        aria-label="Menu"
+      >
+        <svg
+          class="inline-block h-[1.5em] w-[1.5em] align-middle"
+          viewBox="0 0 30 30"
+          aria-hidden="true"
+        >
+          <path
+            fill="none"
+            stroke="rgba(222,218,214,.75)"
+            stroke-linecap="round"
+            stroke-miterlimit="10"
+            stroke-width="2"
+            d="M4 7h22M4 15h22M4 23h22"
+          />
+        </svg>
+      </button>
+      <div
+        class="grow basis-full items-center max-lg:mt-[.6rem] max-lg:max-h-[calc(100dvh-90px)] max-lg:overflow-y-auto max-lg:rounded-2xl max-lg:bg-ink max-lg:p-4 lg:!flex lg:basis-auto"
+        [ngClass]="navOpen() ? 'block' : 'hidden'"
+      >
+        <ul
+          class="m-0 flex list-none flex-col p-0 max-lg:w-full lg:ml-auto lg:flex-row lg:items-center"
+        >
+          @for (l of links; track l.path) {
+            <li>
+              <a
+                class="relative block px-2 py-[.65rem] text-[rgba(250,251,255,.85)] no-underline transition-colors hover:!text-gold2 after:absolute after:bottom-[2px] after:left-2 after:h-px after:w-[2.2rem] after:origin-center after:scale-x-0 after:bg-gold2 after:transition-transform after:duration-300 after:content-[''] hover:after:scale-x-100 lg:mx-[.1rem] lg:py-2 lg:after:left-0 lg:after:right-0 lg:after:w-auto xl:mx-[.4rem] lg:text-[.95rem] xl:text-base"
+                [routerLink]="l.path"
+                routerLinkActive="!text-gold2 after:!scale-x-100"
+                [routerLinkActiveOptions]="{ exact: l.exact }"
+                >{{ l.label }}</a
+              >
+            </li>
+          }
+          @if (auth.loggedIn()) {
+            <li>
+              <a
+                routerLink="/profile"
+                routerLinkActive="!text-gold2 after:!scale-x-100"
+                class="relative block px-2 py-[.65rem] text-[rgba(250,251,255,.85)] no-underline transition-colors hover:!text-gold2 after:absolute after:bottom-[2px] after:left-2 after:h-px after:w-[2.2rem] after:origin-center after:scale-x-0 after:bg-gold2 after:transition-transform after:duration-300 after:content-[''] hover:after:scale-x-100 lg:mx-[.1rem] lg:py-2 lg:after:left-0 lg:after:right-0 lg:after:w-auto xl:mx-[.4rem] text-[.92rem] whitespace-nowrap"
+                ><i class="bi bi-person-circle"></i> {{ firstName() }}</a
+              >
+            </li>
+            <li>
+              <button
+                type="button"
+                class="cursor-pointer border-0 bg-transparent text-left relative block px-2 py-[.65rem] text-[rgba(250,251,255,.85)] no-underline transition-colors hover:!text-gold2 after:absolute after:bottom-[2px] after:left-2 after:h-px after:w-[2.2rem] after:origin-center after:scale-x-0 after:bg-gold2 after:transition-transform after:duration-300 after:content-[''] hover:after:scale-x-100 lg:mx-[.1rem] lg:p-2 lg:after:left-0 lg:after:right-0 lg:after:w-auto xl:mx-[.4rem] lg:text-[.95rem] xl:text-base"
+                (click)="logout()"
+              >
+                Sign out
+              </button>
+            </li>
+          } @else {
+            <li>
+              <a
+                class="relative block px-2 py-[.65rem] text-[rgba(250,251,255,.85)] no-underline transition-colors hover:!text-gold2 after:absolute after:bottom-[2px] after:left-2 after:h-px after:w-[2.2rem] after:origin-center after:scale-x-0 after:bg-gold2 after:transition-transform after:duration-300 after:content-[''] hover:after:scale-x-100 lg:mx-[.1rem] lg:py-2 lg:after:left-0 lg:after:right-0 lg:after:w-auto xl:mx-[.4rem] lg:text-[.95rem] xl:text-base"
+                routerLink="/login"
+                routerLinkActive="!text-gold2 after:!scale-x-100"
+                >Sign in</a
+              >
+            </li>
+          }
+          <li class="mt-2 lg:ml-4 lg:mt-0">
+            <a
+              class="btn-gold text-[.875rem] max-lg:block max-lg:w-full max-lg:px-4 max-lg:py-[.7rem] max-lg:text-center"
+              routerLink="/book"
+              >Book a visit</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+}
+
+<router-outlet />
+
+@if (!isDash()) {
+  <footer
+    class="bg-ink pb-6 pt-12 text-[rgba(250,251,255,.75)] [&_a]:[overflow-wrap:anywhere] [&_i]:mr-[.4rem] [&_i]:text-gold2 [&_p]:[overflow-wrap:anywhere]"
+  >
+    <div class="container">
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-12">
+        <div class="sm:col-span-2 lg:col-span-5">
+          <h5
+            class="font-serif text-[calc(1.3rem+.6vw)] text-gold2 xl:text-[1.75rem]"
+          >
+            <i class="bi bi-gem"></i>Aurum Dental Atelier
+          </h5>
+          <p>Private dentistry for people who prefer to be looked after.</p>
+          <div class="whitespace-nowrap tracking-[2px] text-gold">
+            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i
+            ><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i
+            ><i class="bi bi-star-fill"></i>
+          </div>
+        </div>
+        <div class="lg:col-span-3">
+          <h5 class="font-serif text-gold2">Explore</h5>
+          @for (l of links; track l.path) {
+            <a
+              class="block no-underline hover:text-gold2"
+              [routerLink]="l.path"
+              >{{ l.label }}</a
+            >
+          }
+          <a class="block no-underline hover:text-gold2" routerLink="/book"
+            >Book a visit</a
+          >
+        </div>
+        <div class="lg:col-span-4">
+          <h5 class="font-serif text-gold2">Visit us</h5>
+          <p class="mb-1">
+            <i class="bi bi-geo-alt"></i>12 Gold Avenue, Faisalabad
+          </p>
+          <p class="mb-1"><i class="bi bi-telephone"></i>+92 300 0000000</p>
+          <p class="mb-1">
+            <i class="bi bi-envelope"></i>hello&#64;aurumdental.example
+          </p>
+          <p><i class="bi bi-clock"></i>Mon to Sat, 10 am to 8 pm</p>
+        </div>
+      </div>
+      <hr class="my-4 border-[rgba(250,251,255,.15)] opacity-25" />
+      <div
+        class="flex flex-wrap justify-between gap-2 max-sm:justify-center max-sm:text-center"
+      >
+        <small>© {{ year }} Aurum Dental Atelier</small
+        ><a
+          routerLink="/dashboard"
+          class="text-[.875em] text-gold2 no-underline hover:text-gold2"
+          ><i class="bi bi-speedometer2"></i>Dashboard</a
+        >
+      </div>
+    </div>
+  </footer>
+}
+
+<div class="fixed bottom-0 right-0 z-[2000] max-w-full p-4">
+  <div
+    class="w-[350px] max-w-full rounded-md border border-[rgba(0,0,0,.175)] bg-[#212529] text-[.875rem] text-white shadow-[0_.5rem_1rem_rgba(0,0,0,.15)]"
+    [ngClass]="toast.visible() ? 'block' : 'hidden'"
+    role="status"
+  >
+    <div class="break-words p-3">{{ toast.message() }}</div>
+  </div>
+</div>

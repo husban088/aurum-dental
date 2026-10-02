@@ -1,0 +1,19 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: aurum-notify
+  data:
+    mongodb:
+      uri: ${MONGO_URI:mongodb://localhost:27017/aurum}
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP:localhost:9094}
+    consumer:
+      group-id: aurum-notify
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    listener:
+      missing-topics-fatal: false
+aurum:
+  topic: appointment-events

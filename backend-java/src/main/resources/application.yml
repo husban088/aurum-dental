@@ -1,0 +1,25 @@
+server:
+  port: ${PORT:8080}
+  error:
+    include-message: always
+spring:
+  application:
+    name: aurum-api
+  data:
+    mongodb:
+      uri: ${MONGO_URI:mongodb://localhost:27017/aurum}
+      auto-index-creation: true
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP:localhost:9094}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      properties:
+        max.block.ms: 3000
+aurum:
+  jwt:
+    secret: ${JWT_SECRET:aurum-dental-atelier-secret-key-change-me-before-production-2026}
+    ttl-hours: 168
+  cors:
+    origins: ${CORS_ORIGINS:http://localhost:4200}
+  topic: appointment-events
