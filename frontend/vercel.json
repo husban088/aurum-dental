@@ -3,9 +3,16 @@
   "installCommand": "npm install",
   "buildCommand": "npm run build",
   "outputDirectory": "dist/frontend/browser",
+  "functions": {
+    "api/index.js": { "maxDuration": 30, "includeFiles": "server/**" }
+  },
   "rewrites": [
-    { "source": "/notify/:path*", "destination": "/api/notify/:path*" },
-    { "source": "/analytics/:path*", "destination": "/api/analytics/:path*" },
-    { "source": "/((?!api/|notify/|analytics/).*)", "destination": "/index.html" }
+    { "source": "/api/:path+", "destination": "/api" },
+    { "source": "/notify/:path+", "destination": "/api" },
+    { "source": "/analytics/:path+", "destination": "/api" },
+    {
+      "source": "/((?!api/|api$|notify/|analytics/).*)",
+      "destination": "/index.html"
+    }
   ]
 }
