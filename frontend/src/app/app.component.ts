@@ -1,13 +1,26 @@
 import { NgClass } from '@angular/common';
-import { Component, HostListener, computed, inject, signal } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import {
+  NavigationEnd,
+  Router,
+  RouterLink,
+  RouterLinkActive,
+  RouterOutlet,
+} from '@angular/router';
 import { filter, map } from 'rxjs';
 import { AuthService } from './core/auth.service';
 import { ToastService } from './core/toast.service';
 
 @Component({
-  selector: 'app-root', standalone: true,
+  selector: 'app-root',
+  standalone: true,
   imports: [NgClass, RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './app.component.html',
 })
@@ -25,15 +38,23 @@ export class AppComponent {
   private router = inject(Router);
   auth = inject(AuthService);
   toast = inject(ToastService);
-  private url = toSignal(this.router.events.pipe(filter(e => e instanceof NavigationEnd), map(e => (e as NavigationEnd).urlAfterRedirects)), { initialValue: this.router.url });
+  private url = toSignal(
+    this.router.events.pipe(
+      filter((e) => e instanceof NavigationEnd),
+      map((e) => (e as NavigationEnd).urlAfterRedirects),
+    ),
+    { initialValue: this.router.url },
+  );
   isDash = computed(() => this.url().startsWith('/dashboard'));
-  firstName = computed(() => (this.auth.user()?.name ?? '').split(' ')[0]);
   year = new Date().getFullYear();
 
   constructor() {
-    this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => this.navOpen.set(false));
+    this.router.events
+      .pipe(filter((e) => e instanceof NavigationEnd))
+      .subscribe(() => this.navOpen.set(false));
     this.onScroll();
   }
-  @HostListener('window:scroll') onScroll(): void { this.scrolled.set(window.scrollY > 40); }
-  logout(): void { this.navOpen.set(false); this.auth.logout(); this.toast.show('You have been signed out.'); }
+  @HostListener('window:scroll') onScroll(): void {
+    this.scrolled.set(window.scrollY > 40);
+  }
 }

@@ -1,12 +1,12 @@
-import { Injectable, computed, signal } from "@angular/core";
-import { Router } from "@angular/router";
-import { Observable, tap } from "rxjs";
-import { ApiService } from "./api.service";
-import { AuthResponse, User } from "./models";
+import { Injectable, computed, signal } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable, tap } from 'rxjs';
+import { ApiService } from './api.service';
+import { AuthResponse, User } from './models';
 
-const KEY = "aurum_auth";
+const KEY = 'aurum_auth';
 
-@Injectable({ providedIn: "root" })
+@Injectable({ providedIn: 'root' })
 export class AuthService {
   private state = signal<AuthResponse | null>(this.read());
   readonly user = computed<User | null>(() => this.state()?.user ?? null);
@@ -23,7 +23,7 @@ export class AuthService {
 
   private read(): AuthResponse | null {
     try {
-      const v = JSON.parse(localStorage.getItem(KEY) || "null");
+      const v = JSON.parse(localStorage.getItem(KEY) || 'null');
       return v && v.token && v.user ? v : null;
     } catch {
       return null;
@@ -67,6 +67,16 @@ export class AuthService {
       }),
     );
   }
+  /** Save the patient's edited details (and optionally a new password). */
+  updateProfile(b: {
+    name: string;
+    email: string;
+    phone: string;
+    currentPassword?: string;
+    newPassword?: string;
+  }): Observable<AuthResponse> {
+    return this.api.updateProfile(b).pipe(tap((r) => this.save(r)));
+  }
   deleteAccount(): Observable<void> {
     return this.api.deleteAccount().pipe(tap(() => this.logout()));
   }
@@ -77,6 +87,6 @@ export class AuthService {
     } catch {
       /* ignore */
     }
-    this.router.navigateByUrl("/");
+    this.router.navigateByUrl('/');
   }
 }
